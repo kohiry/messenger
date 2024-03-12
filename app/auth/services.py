@@ -20,7 +20,7 @@ def jwt_code(username: str) -> TokenOut:
         + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     )
     jwt_token = jwt.encode(
-        dict_present.dict(), settings.SECRET_KEY, algorithm=settings.ALGORITHM
+        dict_present.model_dump(), settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )
     return TokenOut(access_token=jwt_token)
 
