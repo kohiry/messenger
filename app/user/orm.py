@@ -3,12 +3,9 @@ import email
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.auth.service import hash_password
 from app.user.models import User
 from app.user.schemas import UserIn, UserOut, CreatedUserMessage
-
-
-def hash_password(password):
-    return password
 
 
 async def create_user(user: UserIn, session: AsyncSession) -> CreatedUserMessage:
