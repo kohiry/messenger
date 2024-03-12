@@ -11,15 +11,16 @@ from app.session import get_async_session
 from app.user.schemas import UserSchema
 
 
-auth_router = APIRouter(prefix='/security', tags=['Auth'])
+auth_router = APIRouter(prefix="/security", tags=["Auth"])
 
 
-@auth_router.post('/token')
-async def new_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-                    session: AsyncSession = Depends(get_async_session)) -> TokenOut:
+@auth_router.post("/token")
+async def new_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    session: AsyncSession = Depends(get_async_session),
+) -> TokenOut:
     user = UserSchema(username=form_data.username, password=form_data.password)
     get_user = await authenticate_user(user=user, session=session)
     if not get_user:
         raise get_error_user_not_authenticate()
     return jwt_code(user.username)
-

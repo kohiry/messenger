@@ -14,8 +14,8 @@ class User(Base):
 
     def to_dict(self):
         return {
-            'username': self.username,
-            'id': self.id,
-            'email': self.email,
-            'hashed_password': self.hashed_password
+            "username": self.username,
+            "id": self.id,
+            "email": self.email,
+            "hashed_password": self.hashed_password,
         }

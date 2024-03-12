@@ -18,6 +18,7 @@ httpcore==1.0.4
 httptools==0.6.1
 httpx==0.27.0
 idna==3.6
+iniconfig==2.0.0
 itsdangerous==2.1.2
 Jinja2==3.1.3
 jose==1.0.0
@@ -25,7 +26,9 @@ jwt==1.3.1
 Mako==1.3.2
 MarkupSafe==2.1.5
 orjson==3.9.15
+packaging==24.0
 passlib==1.7.4
+pluggy==1.4.0
 psycopg2-binary==2.9.9
 pyasn1==0.5.1
 pycparser==2.21
@@ -33,11 +36,14 @@ pydantic==2.6.3
 pydantic-extra-types==2.6.0
 pydantic-settings==2.2.1
 pydantic_core==2.16.3
+pytest==8.1.1
+pytest-asyncio==0.23.5.post1
 python-dotenv==1.0.1
 python-jose==3.3.0
 python-multipart==0.0.9
 PyYAML==6.0.1
 rsa==4.9
+ruff==0.3.2
 six==1.16.0
 sniffio==1.3.1
 SQLAlchemy==2.0.28

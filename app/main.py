@@ -12,6 +12,6 @@ app.include_router(user_router)
 app.include_router(auth_router)
 
 
-@app.get('/')
+@app.get("/")
 def core(current_user: Annotated[UserOut, Depends(get_current_user)]) -> dict[str, str]:
-    return {'hello': 'world'}
+    return {"hello": "world"}

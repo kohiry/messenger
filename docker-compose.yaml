@@ -10,6 +10,15 @@ services:
     ports:
       - "5432:5432"
 
+  test_postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: test_${P_DB}
+      POSTGRES_USER: ${P_USER}
+      POSTGRES_PASSWORD: ${P_PASS}
+    ports:
+      - "6000:5432"
+
   back:
     build:
       context: .
