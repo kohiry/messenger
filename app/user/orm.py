@@ -1,11 +1,9 @@
-import email
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.auth.service import hash_password
+from app.user.services import hash_password
 from app.user.models import User
-from app.user.schemas import UserIn, UserOut, CreatedUserMessage
+from app.user.schemas import UserIn, UserOut, CreatedUserMessage, UserOutWithPassword
 
 
 async def create_user(user: UserIn, session: AsyncSession) -> CreatedUserMessage:
@@ -16,10 +14,10 @@ async def create_user(user: UserIn, session: AsyncSession) -> CreatedUserMessage
     return CreatedUserMessage()
 
 
-async def get_user_by_username(username: str, session: AsyncSession) -> UserOut | None:
+async def get_user_by_username(username: str, session: AsyncSession) -> UserOutWithPassword | None:
     user = (await session.execute(select(User).where(User.username == username))).scalar_one_or_none()
     if user:
-        return UserOut(**user.to_dict())
+        return UserOutWithPassword(**user.to_dict())
     return None
 
 

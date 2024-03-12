@@ -10,6 +10,11 @@ class PostgresSettings(BaseSettings):
     P_ASYNC_DRIVER: str
     P_PORT: int
 
+    # auth
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+
     class Config:
         env_file = '.env'
 

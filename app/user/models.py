@@ -17,4 +17,5 @@ class User(Base):
             'username': self.username,
             'id': self.id,
             'email': self.email,
+            'hashed_password': self.hashed_password
         }
