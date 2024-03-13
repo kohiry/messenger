@@ -9,7 +9,7 @@ from app.config import settings
 from app.session import get_async_session
 from app.auth.constants import oauth2_scheme
 from app.user.orm import get_user_by_username
-from app.user.schemas import UserSchema
+from app.user.schemas import UserSchema, UserOut
 from app.user.services import compare_password
 
 
@@ -38,7 +38,7 @@ async def get_current_user(
 ):
     decode_token = jwt_decode(token)
     user = await get_user_by_username(decode_token.sub, session)
-    return user
+    return UserOut(**user.model_dump())
 
 
 async def authenticate_user(user: UserSchema, session: AsyncSession):
