@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, APIRouter
 
 from app.auth.router import auth_router
 from app.auth.services import get_current_user
@@ -9,9 +9,11 @@ from app.user.router import user_router
 from app.user.schemas import UserOut
 
 app = FastAPI()
-app.include_router(user_router)
-app.include_router(auth_router)
-app.include_router(chat_router)
+services = APIRouter(prefix="/api")
+services.include_router(user_router)
+services.include_router(auth_router)
+services.include_router(chat_router)
+app.include_router(services)
 
 
 @app.get("/")

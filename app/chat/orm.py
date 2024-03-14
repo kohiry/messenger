@@ -17,7 +17,7 @@ async def get_messages_by_chat_id(chat_id: int, session: AsyncSession) -> list[M
     if messages is None:
         return []
 
-    return [MessageSchema.model_validate(**message.get_dict()) for message in messages]
+    return [MessageSchema.model_validate(message.get_dict()) for message in messages]
 
 
 async def get_chat(chat_id: int, user_id: int, session: AsyncSession) -> ChatSchema | None:
@@ -87,9 +87,34 @@ async def get_chats_by_current_user(current_id: int, session: AsyncSession):
     for chat in chats:  # use async for bruh
         schema_messages = await get_messages_by_chat_id(chat.id, session)
         chat_dict = chat.get_dict()
-        chat_dict.update({'messages': schema_messages})
+        chat_dict.update({'messages': schema_messages})  # TODO usless
         if chat_dict is None:
             continue
         chats_schemas.append(ChatSchema.model_validate(chat_dict))
 
     return chats_schemas
+
+
+async def create_message_by_recipient_id(
+        sender_id: int, chat_id: int, session: AsyncSession,
+        text: str
+) -> int | None:
+    chat = (await session.execute(
+        select(Chat).where(
+            and_(
+                or_(Chat.first_user_id == sender_id, Chat.second_user_id == sender_id),
+                Chat.id == chat_id
+            )
+        )
+    )).scalar_one_or_none()
+    if chat is None:
+        return None
+    recipient_id = chat.second_user_id != sender_id and chat.second_user_id or chat.first_user_id
+    message = Message(chat_id=chat_id, sender_id=sender_id, recipient_id=recipient_id,
+                      text=text)
+    session.add(message)
+    await session.commit()
+    return message.id
+
+
+

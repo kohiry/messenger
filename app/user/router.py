@@ -15,6 +15,7 @@ from app.user.schemas import UserIn, UserOut, CreatedUserMessage
 from app.user.orm import create_user, get_user_by_username, get_user_by_id
 
 user_router = APIRouter(prefix="/user", tags=["User"])
+user_templates_router = APIRouter(prefix="/user", tags=["User"])
 
 
 @user_router.get("/profile/me", response_model=UserOut)
@@ -45,3 +46,4 @@ async def user_profile(
     if get_user is None:
         raise get_404_user_not_found()
     return get_user
+
