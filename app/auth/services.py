@@ -35,13 +35,13 @@ def jwt_decode(token: str) -> TokenIn:
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
     session: AsyncSession = Depends(get_async_session),
-):
+) -> UserOut:
     decode_token = jwt_decode(token)
     user = await get_user_by_username(decode_token.sub, session)
     return UserOut(**user.model_dump())
 
 
-async def authenticate_user(user: UserSchema, session: AsyncSession):
+async def authenticate_user(user: UserSchema, session: AsyncSession) -> UserOut | bool:
     get_user = await get_user_by_username(user.username, session)
     if get_user is None:
         return False
