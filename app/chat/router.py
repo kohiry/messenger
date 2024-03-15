@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, File, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.services import get_current_user
@@ -53,7 +53,7 @@ async def start_chat_with_friend(
     return await create_chat_by_friend_id(friend_id, current_user.id, session)
 
 
-@chat_router.post("/send_message")
+@chat_router.post("/send_message/text")
 async def send_message(
     text: str,
     chat_id: int,
@@ -63,3 +63,11 @@ async def send_message(
     return await create_message_by_recipient_id(
         current_user.id, chat_id, session, text
     )
+
+
+@chat_router.post("/send_message/audio")
+async def send_audio(
+    audio: Annotated[UploadFile, File()],
+    current_user: Annotated[UserOut, Depends(get_current_user)],
+    session: AsyncSession = Depends(get_async_session),
+):
