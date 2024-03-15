@@ -11,6 +11,7 @@ cryptography==42.0.5
 dnspython==2.6.1
 ecdsa==0.18.0
 email_validator==2.1.1
+Faker==24.2.0
 fastapi==0.110.0
 greenlet==3.0.3
 h11==0.14.0
@@ -38,6 +39,7 @@ pydantic-settings==2.2.1
 pydantic_core==2.16.3
 pytest==8.1.1
 pytest-asyncio==0.23.5.post1
+python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-jose==3.3.0
 python-multipart==0.0.9

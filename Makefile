@@ -15,4 +15,4 @@ stop:
 log:
 	docker-compose logs back
 test:
-	ruff check app && docker-compose exec back python -m pytest tests
+	ruff check app && docker-compose exec back python -m pytest tests -s

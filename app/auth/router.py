@@ -12,6 +12,7 @@ from app.user.schemas import UserSchema
 
 
 auth_router = APIRouter(prefix="/security", tags=["Auth"])
+auth_templates_router = APIRouter(prefix="/login", tags=["User"])
 
 
 @auth_router.post("/token")
