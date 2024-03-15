@@ -5,6 +5,11 @@
 ## Технологии
 Python, FastAPI, Alembic, SQLAchemy, Docker, Pytest, Makefile, Ruff
 
+## Как запускать:
+- На машине должен быть docker, docker-compose и make 
+- запуск командой `make upd`
+
+
 ## Конечные точки:
 
 ### User
@@ -20,3 +25,4 @@ Python, FastAPI, Alembic, SQLAchemy, Docker, Pytest, Makefile, Ruff
 - POST `/api/chat/send_message`
 ### default
 - GET `/`
+
