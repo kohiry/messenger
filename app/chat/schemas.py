@@ -15,3 +15,8 @@ class ChatSchema(BaseModel):
     second_user_id: int
     messages: list[MessageSchema] = []
 
+
+class AnswerGood(BaseModel):
+    status: int = 200
+    message: str = "Done"
+

@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, Query, File, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.services import get_current_user
+from app.chat.constants import CORE_PATH_STATIC
 from app.chat.orm import (
     get_chat,
     get_chat_id_by_friend_id,
@@ -10,7 +11,8 @@ from app.chat.orm import (
     get_chats_by_current_user,
     create_message_by_recipient_id,
 )
-from app.chat.schemas import ChatSchema
+from app.chat.schemas import ChatSchema, AnswerGood
+from app.chat.services import create_folder, get_logger, save_media
 from app.errors import get_404_user_not_found
 from app.session import get_async_session
 from app.user.orm import get_user_by_id
@@ -65,9 +67,26 @@ async def send_message(
     )
 
 
-@chat_router.post("/send_message/audio")
+@chat_router.post("/send_message/media")
 async def send_audio(
-    audio: Annotated[UploadFile, File()],
+    media: Annotated[UploadFile, File()],
     current_user: Annotated[UserOut, Depends(get_current_user)],
     session: AsyncSession = Depends(get_async_session),
+    type: 
 ):
+    chat_logger = get_logger()
+    #TODO сделать проверку, нету ли аудио в бд
+    folder = CORE_PATH_STATIC + str(current_user.id) + '/' + 'audio'
+    filename = folder + '/' + media.filename
+    await create_folder(folder)
+    chat_logger.info(f"Создана директория юзера {current_user.username}")
+    await save_media(media, filename)
+    chat_logger.info(f"Файл успешно сохранён в директории {folder}")
+
+    # добавление в базу данных
+    # отправка сообщения в брокер для распила на текст
+
+    return AnswerGood()
+
+
+
