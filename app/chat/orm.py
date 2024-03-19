@@ -1,7 +1,7 @@
 from sqlalchemy import select, or_, and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.chat.models import Chat, Message
+from app.chat.models import Message
 from app.chat.schemas import ChatSchema, MessageSchema
 
 

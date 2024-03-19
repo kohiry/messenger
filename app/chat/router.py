@@ -1,7 +1,8 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Query, File, UploadFile
+from fastapi import APIRouter, Depends, Query, File, UploadFile, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.auth.constants import MediaEnum
 from app.auth.services import get_current_user
 from app.chat.constants import CORE_PATH_STATIC
 from app.chat.orm import (
@@ -22,7 +23,7 @@ from app.user.schemas import UserOut
 chat_router = APIRouter(prefix="/chat", tags=["Messanger"])
 
 
-@chat_router.get("/id/{chat_id}")
+# @chat_router.get("/id/{chat_id}")
 async def get_chat_by_id(
     chat_id: int,
     current_user: Annotated[UserOut, Depends(get_current_user)],
@@ -32,7 +33,7 @@ async def get_chat_by_id(
     return chat
 
 
-@chat_router.get("/my")
+# @chat_router.get("/my")
 async def get_my_chats(
     current_user: Annotated[UserOut, Depends(get_current_user)],
     session: AsyncSession = Depends(get_async_session),
@@ -40,7 +41,7 @@ async def get_my_chats(
     return await get_chats_by_current_user(current_user.id, session)
 
 
-@chat_router.post("/start_with")
+# @chat_router.post("/start_with")
 async def start_chat_with_friend(
     friend_id: Annotated[int, Query()],
     current_user: Annotated[UserOut, Depends(get_current_user)],
@@ -55,7 +56,7 @@ async def start_chat_with_friend(
     return await create_chat_by_friend_id(friend_id, current_user.id, session)
 
 
-@chat_router.post("/send_message/text")
+# @chat_router.post("/send_message/text")
 async def send_message(
     text: str,
     chat_id: int,
@@ -67,16 +68,16 @@ async def send_message(
     )
 
 
-@chat_router.post("/send_message/media")
+# @chat_router.post("/send_message/media")
 async def send_audio(
     media: Annotated[UploadFile, File()],
     current_user: Annotated[UserOut, Depends(get_current_user)],
+    type_media: Annotated[MediaEnum, Body()],
     session: AsyncSession = Depends(get_async_session),
-    type: 
 ):
     chat_logger = get_logger()
     #TODO сделать проверку, нету ли аудио в бд
-    folder = CORE_PATH_STATIC + str(current_user.id) + '/' + 'audio'
+    folder = CORE_PATH_STATIC + str(current_user.id) + '/' + type_media.name
     filename = folder + '/' + media.filename
     await create_folder(folder)
     chat_logger.info(f"Создана директория юзера {current_user.username}")
